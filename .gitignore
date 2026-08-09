@@ -1,0 +1,130 @@
+# ================================
+# Miscellaneous
+# ================================
+
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# ================================
+# IntelliJ / Android Studio
+# ================================
+
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# ================================
+# VS Code
+# ================================
+
+# Uncomment if you don't want VS Code settings in Git
+# .vscode/
+
+# ================================
+# Flutter / Dart / Pub
+# ================================
+
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+build/
+coverage/
+
+# ================================
+# Symbolication
+# ================================
+
+app.*.symbols
+
+# ================================
+# Obfuscation
+# ================================
+
+app.*.map.json
+
+# ================================
+# Android Build Artifacts
+# ================================
+
+/android/app/debug/
+/android/app/profile/
+/android/app/release/
+
+# ================================
+# Firebase Configuration
+# ================================
+
+# FlutterFire generated configuration
+lib/firebase_options.dart
+
+# Android Firebase configuration
+android/app/google-services.json
+
+# iOS Firebase configuration
+ios/Runner/GoogleService-Info.plist
+
+# Firebase Admin SDK credentials
+serviceAccountKey.json
+*-service-account.json
+
+# ================================
+# Environment / Secrets
+# ================================
+
+.env
+.env.*
+!.env.example
+
+# ================================
+# Firebase Functions
+# ================================
+
+functions/node_modules/
+functions/.firebase/
+
+# Firebase emulator data
+.firebase/
+
+# ================================
+# Generated / Temporary Files
+# ================================
+
+*.tmp
+*.temp
+# Firebase configuration files
+lib/firebase_options.dart
+android/app/google-services.json
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Firebase service account/private keys
+serviceAccountKey.json
+*-service-account.json
+
+# Supabase configuration/secrets
+supabase_config.dart
+
+# Firebase Functions
+functions/node_modules/
+functions/.env
+# Firebase project configuration
+.firebaserc
+firebase.json
