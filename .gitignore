@@ -128,3 +128,6 @@ functions/.env
 # Firebase project configuration
 .firebaserc
 firebase.json
+# Firebase configuration
+lib/firebase_options.dart
+android/app/google-services.json
