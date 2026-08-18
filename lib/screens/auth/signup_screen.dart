@@ -87,142 +87,305 @@ class _SignupScreenState extends State<SignupScreen> {
     final provider = context.watch<AuthProvider>();
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Create Account")),
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Color(0xFF1A237E),
+              Color(0xFF283593),
+              Color(0xFF3949AB),
+              Color(0xFF5C6BC0),
+            ],
+          ),
+        ),
+        child: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  const SizedBox(height: 10),
 
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
-
-          child: Form(
-            key: _formKey,
-
-            child: Column(
-              children: [
-                CustomTextField(
-                  controller: nameController,
-                  hintText: "Full Name",
-                  prefixIcon: Icons.person,
-                  validator: Validators.validateName,
-                ),
-
-                const SizedBox(height: 18),
-
-                CustomTextField(
-                  controller: emailController,
-                  hintText: "Email",
-                  prefixIcon: Icons.email,
-                  keyboardType: TextInputType.emailAddress,
-                  validator: Validators.validateEmail,
-                ),
-
-                const SizedBox(height: 18),
-
-                CustomTextField(
-                  controller: phoneController,
-                  hintText: "Phone Number",
-                  prefixIcon: Icons.phone,
-                  keyboardType: TextInputType.phone,
-                  validator: Validators.validatePhone,
-                ),
-
-                const SizedBox(height: 18),
-
-                CustomTextField(
-                  controller: passwordController,
-                  hintText: "Password",
-                  prefixIcon: Icons.lock,
-                  obscureText: obscurePassword,
-                  validator: Validators.validatePassword,
-
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        obscurePassword = !obscurePassword;
-                      });
-                    },
-
-                    icon: Icon(
-                      obscurePassword ? Icons.visibility_off : Icons.visibility,
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 18),
-
-                CustomTextField(
-                  controller: confirmPasswordController,
-                  hintText: "Confirm Password",
-                  prefixIcon: Icons.lock_outline,
-                  obscureText: obscureConfirmPassword,
-                  validator: Validators.validatePassword,
-
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        obscureConfirmPassword = !obscureConfirmPassword;
-                      });
-                    },
-
-                    icon: Icon(
-                      obscureConfirmPassword
-                          ? Icons.visibility_off
-                          : Icons.visibility,
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 25),
-
-                DropdownButtonFormField<String>(
-                  value: selectedRole,
-
-                  decoration: const InputDecoration(
-                    labelText: "Select Role",
-
-                    prefixIcon: Icon(Icons.badge),
+                  // Back Button + Title
+                  Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () => Navigator.pop(context),
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.15),
+                            borderRadius: BorderRadius.circular(14),
+                            border: Border.all(
+                              color: Colors.white.withOpacity(0.25),
+                            ),
+                          ),
+                          child: const Icon(
+                            Icons.arrow_back_ios_new_rounded,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      const Text(
+                        "Create Account",
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
                   ),
 
-                  items: const [
-                    DropdownMenuItem(
-                      value: "job_seeker",
+                  const SizedBox(height: 28),
 
-                      child: Text("Job Seeker"),
+                  // Top Icon
+                  Container(
+                    width: 90,
+                    height: 90,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(26),
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Colors.white.withOpacity(0.25),
+                          Colors.white.withOpacity(0.08),
+                        ],
+                      ),
+                      border: Border.all(
+                        color: Colors.white.withOpacity(0.35),
+                        width: 1.5,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          blurRadius: 20,
+                          offset: const Offset(0, 10),
+                        ),
+                      ],
                     ),
-
-                    DropdownMenuItem(
-                      value: "employer",
-
-                      child: Text("Employer"),
+                    child: const Icon(
+                      Icons.person_add_alt_1_rounded,
+                      size: 46,
+                      color: Colors.white,
                     ),
-                  ],
+                  ),
 
-                  onChanged: (value) {
-                    setState(() {
-                      selectedRole = value!;
-                    });
-                  },
-                ),
+                  const SizedBox(height: 18),
 
-                const SizedBox(height: 30),
+                  const Text(
+                    "Join Job Portal",
+                    style: TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.w800,
+                      color: Colors.white,
+                    ),
+                  ),
 
-                CustomButton(
-                  text: "Create Account",
+                  const SizedBox(height: 6),
 
-                  isLoading: provider.isLoading,
+                  Text(
+                    "Create your account to get started",
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.75),
+                      fontSize: 14,
+                    ),
+                  ),
 
-                  onPressed: signUp,
-                ),
+                  const SizedBox(height: 30),
 
-                const SizedBox(height: 20),
+                  // Main Form Card
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(22),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(28),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.12),
+                          blurRadius: 30,
+                          offset: const Offset(0, 15),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        CustomTextField(
+                          controller: nameController,
+                          hintText: "Full Name",
+                          prefixIcon: Icons.person_outline_rounded,
+                          validator: Validators.validateName,
+                        ),
 
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
+                        const SizedBox(height: 16),
 
-                  child: const Text("Already have an account? Login"),
-                ),
-              ],
+                        CustomTextField(
+                          controller: emailController,
+                          hintText: "Email",
+                          prefixIcon: Icons.email_outlined,
+                          keyboardType: TextInputType.emailAddress,
+                          validator: Validators.validateEmail,
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        CustomTextField(
+                          controller: phoneController,
+                          hintText: "Phone Number",
+                          prefixIcon: Icons.phone_outlined,
+                          keyboardType: TextInputType.phone,
+                          validator: Validators.validatePhone,
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        CustomTextField(
+                          controller: passwordController,
+                          hintText: "Password",
+                          prefixIcon: Icons.lock_outline_rounded,
+                          obscureText: obscurePassword,
+                          validator: Validators.validatePassword,
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                obscurePassword = !obscurePassword;
+                              });
+                            },
+                            icon: Icon(
+                              obscurePassword
+                                  ? Icons.visibility_off_rounded
+                                  : Icons.visibility_rounded,
+                              color: Colors.grey.shade600,
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        CustomTextField(
+                          controller: confirmPasswordController,
+                          hintText: "Confirm Password",
+                          prefixIcon: Icons.lock_outline_rounded,
+                          obscureText: obscureConfirmPassword,
+                          validator: Validators.validatePassword,
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                obscureConfirmPassword =
+                                    !obscureConfirmPassword;
+                              });
+                            },
+                            icon: Icon(
+                              obscureConfirmPassword
+                                  ? Icons.visibility_off_rounded
+                                  : Icons.visibility_rounded,
+                              color: Colors.grey.shade600,
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(height: 20),
+
+                        // Role Dropdown
+                        DropdownButtonFormField<String>(
+                          value: selectedRole,
+                          decoration: InputDecoration(
+                            labelText: "Select Role",
+                            prefixIcon: const Icon(
+                              Icons.badge_outlined,
+                              color: Color(0xFF3949AB),
+                            ),
+                            filled: true,
+                            fillColor: Colors.grey.shade50,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(16),
+                              borderSide: BorderSide.none,
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(16),
+                              borderSide: BorderSide(
+                                color: Colors.grey.shade200,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(16),
+                              borderSide: const BorderSide(
+                                color: Color(0xFF3949AB),
+                                width: 1.5,
+                              ),
+                            ),
+                          ),
+                          items: const [
+                            DropdownMenuItem(
+                              value: "job_seeker",
+                              child: Text("Job Seeker"),
+                            ),
+                            DropdownMenuItem(
+                              value: "employer",
+                              child: Text("Employer"),
+                            ),
+                          ],
+                          onChanged: (value) {
+                            setState(() {
+                              selectedRole = value!;
+                            });
+                          },
+                        ),
+
+                        const SizedBox(height: 28),
+
+                        CustomButton(
+                          text: "Create Account",
+                          isLoading: provider.isLoading,
+                          onPressed: signUp,
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 24),
+
+                  // Already have account
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 18,
+                      vertical: 12,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.12),
+                      borderRadius: BorderRadius.circular(40),
+                      border: Border.all(color: Colors.white.withOpacity(0.2)),
+                    ),
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      style: TextButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        padding: EdgeInsets.zero,
+                      ),
+                      child: const Text(
+                        "Already have an account? Login",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+                ],
+              ),
             ),
           ),
         ),

@@ -93,90 +93,238 @@ class _AddJobScreenState extends State<AddJobScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Post New Job")),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(18),
-        child: Form(
-          key: _formKey,
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Color(0xFFF8F9FF), Color(0xFFEEF1FF), Color(0xFFE8ECFF)],
+          ),
+        ),
+        child: SafeArea(
           child: Column(
             children: [
-              CustomTextField(
-                controller: titleController,
-                hintText: "Job Title",
-                prefixIcon: Icons.work,
-                validator: Validators.validateName,
-              ),
-
-              const SizedBox(height: 16),
-
-              CustomTextField(
-                controller: companyController,
-                hintText: "Company Name",
-                prefixIcon: Icons.business,
-                validator: Validators.validateName,
-              ),
-
-              const SizedBox(height: 16),
-
-              CustomTextField(
-                controller: locationController,
-                hintText: "Location",
-                prefixIcon: Icons.location_on,
-                validator: Validators.validateName,
-              ),
-
-              const SizedBox(height: 16),
-
-              CustomTextField(
-                controller: salaryController,
-                hintText: "Salary",
-                prefixIcon: Icons.payments,
-                keyboardType: TextInputType.number,
-                validator: Validators.validateName,
-              ),
-
-              const SizedBox(height: 16),
-
-              CustomTextField(
-                controller: descriptionController,
-                hintText: "Job Description",
-                prefixIcon: Icons.description,
-                maxLines: 5,
-                validator: Validators.validateName,
-              ),
-
-              const SizedBox(height: 16),
-
-              CustomTextField(
-                controller: requirementsController,
-                hintText: "Requirements",
-                prefixIcon: Icons.list_alt,
-                maxLines: 4,
-                validator: Validators.validateName,
-              ),
-
-              const SizedBox(height: 20),
-
-              ListTile(
-                tileColor: Colors.grey.shade100,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                leading: const Icon(Icons.calendar_month),
-                title: Text(
-                  deadline == null
-                      ? "Select Deadline"
-                      : "${deadline!.day}/${deadline!.month}/${deadline!.year}",
-                ),
-                trailing: IconButton(
-                  icon: const Icon(Icons.date_range),
-                  onPressed: selectDeadline,
+              // Custom Header
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 12, 20, 8),
+                child: Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () => Navigator.pop(context),
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(14),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.06),
+                              blurRadius: 10,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: const Icon(
+                          Icons.arrow_back_ios_new_rounded,
+                          size: 20,
+                          color: Color(0xFF1A237E),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Post New Job",
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w800,
+                            color: Color(0xFF1A237E),
+                          ),
+                        ),
+                        SizedBox(height: 2),
+                        Text(
+                          "Fill the details below",
+                          style: TextStyle(fontSize: 13, color: Colors.grey),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
 
-              const SizedBox(height: 30),
+              // Form
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.fromLTRB(18, 10, 18, 24),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        // Main Form Card
+                        Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(22),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(28),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.06),
+                                blurRadius: 25,
+                                offset: const Offset(0, 10),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            children: [
+                              CustomTextField(
+                                controller: titleController,
+                                hintText: "Job Title",
+                                prefixIcon: Icons.work_outline_rounded,
+                                validator: Validators.validateName,
+                              ),
 
-              CustomButton(text: "Post Job", onPressed: saveJob),
+                              const SizedBox(height: 16),
+
+                              CustomTextField(
+                                controller: companyController,
+                                hintText: "Company Name",
+                                prefixIcon: Icons.business_rounded,
+                                validator: Validators.validateName,
+                              ),
+
+                              const SizedBox(height: 16),
+
+                              CustomTextField(
+                                controller: locationController,
+                                hintText: "Location",
+                                prefixIcon: Icons.location_on_outlined,
+                                validator: Validators.validateName,
+                              ),
+
+                              const SizedBox(height: 16),
+
+                              CustomTextField(
+                                controller: salaryController,
+                                hintText: "Salary",
+                                prefixIcon: Icons.payments_outlined,
+                                keyboardType: TextInputType.number,
+                                validator: Validators.validateName,
+                              ),
+
+                              const SizedBox(height: 16),
+
+                              CustomTextField(
+                                controller: descriptionController,
+                                hintText: "Job Description",
+                                prefixIcon: Icons.description_outlined,
+                                maxLines: 5,
+                                validator: Validators.validateName,
+                              ),
+
+                              const SizedBox(height: 16),
+
+                              CustomTextField(
+                                controller: requirementsController,
+                                hintText: "Requirements",
+                                prefixIcon: Icons.list_alt_rounded,
+                                maxLines: 4,
+                                validator: Validators.validateName,
+                              ),
+
+                              const SizedBox(height: 20),
+
+                              // Deadline Selector
+                              GestureDetector(
+                                onTap: selectDeadline,
+                                child: Container(
+                                  width: double.infinity,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 16,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey.shade50,
+                                    borderRadius: BorderRadius.circular(16),
+                                    border: Border.all(
+                                      color: Colors.grey.shade200,
+                                    ),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.all(10),
+                                        decoration: BoxDecoration(
+                                          color: const Color(
+                                            0xFF3949AB,
+                                          ).withOpacity(0.1),
+                                          borderRadius: BorderRadius.circular(
+                                            12,
+                                          ),
+                                        ),
+                                        child: const Icon(
+                                          Icons.calendar_month_rounded,
+                                          color: Color(0xFF3949AB),
+                                          size: 22,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 14),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Application Deadline",
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.grey.shade600,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 2),
+                                            Text(
+                                              deadline == null
+                                                  ? "Select Deadline"
+                                                  : "${deadline!.day}/${deadline!.month}/${deadline!.year}",
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w600,
+                                                color: deadline == null
+                                                    ? Colors.grey.shade500
+                                                    : const Color(0xFF1A237E),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const Icon(
+                                        Icons.arrow_forward_ios_rounded,
+                                        size: 16,
+                                        color: Colors.grey,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+
+                              const SizedBox(height: 28),
+
+                              CustomButton(
+                                text: "Post Job",
+                                onPressed: saveJob,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),

@@ -38,7 +38,7 @@ class ResumeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final bool isDesktop = kIsWeb && constraints.maxWidth >= 700;
+        final bool isDesktop = constraints.maxWidth >= 700;
 
         if (isDesktop) {
           return _buildDesktopCard(context);
@@ -51,63 +51,106 @@ class ResumeCard extends StatelessWidget {
 
   // ============================================================
   // MOBILE
-  // Existing mobile layout kept simple and unchanged
   // ============================================================
 
   Widget _buildMobileCard(BuildContext context) {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      child: Padding(
-        padding: const EdgeInsets.all(20),
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    return Container(
+      width: double.infinity,
+      height: screenHeight * 0.62,
+      margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(22),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.07),
+            blurRadius: 18,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        padding: const EdgeInsets.all(16),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Header
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Icon(Icons.picture_as_pdf, color: Colors.red, size: 45),
-
-                const SizedBox(width: 15),
-
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.red.shade50,
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: const Icon(
+                    Icons.picture_as_pdf_rounded,
+                    color: Colors.red,
+                    size: 32,
+                  ),
+                ),
+                const SizedBox(width: 12),
                 Expanded(
                   child: Text(
                     resume.fileName,
                     style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xFF1A237E),
                     ),
-                    maxLines: 2,
+                    maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ],
             ),
 
-            const SizedBox(height: 25),
+            const SizedBox(height: 16),
 
-            Text("Size: ${formatSize(resume.fileSize)}"),
-
-            const SizedBox(height: 8),
-
-            Text(
-              "Uploaded: "
-              "${resume.uploadedAt.day}/"
-              "${resume.uploadedAt.month}/"
-              "${resume.uploadedAt.year}",
+            // Info
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+              decoration: BoxDecoration(
+                color: const Color(0xFFF5F7FF),
+                borderRadius: BorderRadius.circular(14),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: _infoItem(
+                      icon: Icons.storage_outlined,
+                      title: "Size",
+                      value: formatSize(resume.fileSize),
+                    ),
+                  ),
+                  Container(width: 1, height: 36, color: Colors.grey.shade300),
+                  Expanded(
+                    child: _infoItem(
+                      icon: Icons.calendar_today_outlined,
+                      title: "Uploaded",
+                      value:
+                          "${resume.uploadedAt.day}/${resume.uploadedAt.month}/${resume.uploadedAt.year}",
+                    ),
+                  ),
+                ],
+              ),
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 16),
 
             _previewButton(context),
-
             const SizedBox(height: 10),
 
             _downloadButton(context),
-
             const SizedBox(height: 10),
 
             _shareButton(context),
-
             const SizedBox(height: 10),
 
             _deleteButton(context),
@@ -118,117 +161,141 @@ class ResumeCard extends StatelessWidget {
   }
 
   // ============================================================
-  // DESKTOP / WEB
-  // Responsive + Scrollable
+  // DESKTOP / CHROME
   // ============================================================
 
   Widget _buildDesktopCard(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Center(
       child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 1100),
-        child: Card(
-          elevation: 4,
-          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18),
-          ),
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxHeight: 560),
-            child: SingleChildScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              padding: const EdgeInsets.all(28),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(14),
-                        decoration: BoxDecoration(
-                          color: Colors.red.shade50,
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                        child: const Icon(
-                          Icons.picture_as_pdf,
-                          color: Colors.red,
-                          size: 42,
-                        ),
-                      ),
-
-                      const SizedBox(width: 18),
-
-                      Expanded(
-                        child: Text(
-                          resume.fileName,
-                          style: const TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 28),
-
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(18),
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade50,
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: _infoItem(
-                            icon: Icons.storage_outlined,
-                            title: "File Size",
-                            value: formatSize(resume.fileSize),
-                          ),
-                        ),
-
-                        Container(
-                          width: 1,
-                          height: 45,
-                          color: Colors.grey.shade300,
-                        ),
-
-                        Expanded(
-                          child: _infoItem(
-                            icon: Icons.calendar_today_outlined,
-                            title: "Uploaded",
-                            value:
-                                "${resume.uploadedAt.day}/"
-                                "${resume.uploadedAt.month}/"
-                                "${resume.uploadedAt.year}",
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  const SizedBox(height: 24),
-
-                  _previewButton(context),
-
-                  const SizedBox(height: 12),
-
-                  _downloadButton(context),
-
-                  const SizedBox(height: 12),
-
-                  _shareButton(context),
-
-                  const SizedBox(height: 12),
-
-                  _deleteButton(context),
-
-                  const SizedBox(height: 5),
-                ],
+        constraints: const BoxConstraints(maxWidth: 900),
+        child: Container(
+          width: double.infinity,
+          height: screenHeight * 0.70,
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(24),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.07),
+                blurRadius: 22,
+                offset: const Offset(0, 10),
               ),
+            ],
+          ),
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Header
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(14),
+                      decoration: BoxDecoration(
+                        color: Colors.red.shade50,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: const Icon(
+                        Icons.picture_as_pdf_rounded,
+                        color: Colors.red,
+                        size: 38,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Text(
+                        resume.fileName,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w800,
+                          color: Color(0xFF1A237E),
+                        ),
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 22),
+
+                // Info Box
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF5F7FF),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      if (constraints.maxWidth < 400) {
+                        return Column(
+                          children: [
+                            _infoItem(
+                              icon: Icons.storage_outlined,
+                              title: "File Size",
+                              value: formatSize(resume.fileSize),
+                            ),
+                            const SizedBox(height: 12),
+                            _infoItem(
+                              icon: Icons.calendar_today_outlined,
+                              title: "Uploaded",
+                              value:
+                                  "${resume.uploadedAt.day}/${resume.uploadedAt.month}/${resume.uploadedAt.year}",
+                            ),
+                          ],
+                        );
+                      }
+
+                      return Row(
+                        children: [
+                          Expanded(
+                            child: _infoItem(
+                              icon: Icons.storage_outlined,
+                              title: "File Size",
+                              value: formatSize(resume.fileSize),
+                            ),
+                          ),
+                          Container(
+                            width: 1,
+                            height: 40,
+                            color: Colors.grey.shade300,
+                          ),
+                          Expanded(
+                            child: _infoItem(
+                              icon: Icons.calendar_today_outlined,
+                              title: "Uploaded",
+                              value:
+                                  "${resume.uploadedAt.day}/${resume.uploadedAt.month}/${resume.uploadedAt.year}",
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+
+                const SizedBox(height: 22),
+
+                _previewButton(context),
+                const SizedBox(height: 10),
+
+                _downloadButton(context),
+                const SizedBox(height: 10),
+
+                _shareButton(context),
+                const SizedBox(height: 10),
+
+                _deleteButton(context),
+              ],
             ),
           ),
         ),
@@ -246,30 +313,29 @@ class ResumeCard extends StatelessWidget {
     required String value,
   }) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, size: 22, color: Colors.grey.shade700),
-
-        const SizedBox(width: 10),
-
+        Icon(icon, size: 18, color: Colors.grey.shade700),
+        const SizedBox(width: 8),
         Flexible(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
               Text(
                 title,
                 style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
               ),
-
-              const SizedBox(height: 3),
-
+              const SizedBox(height: 2),
               Text(
                 value,
                 style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xFF1A237E),
                 ),
                 overflow: TextOverflow.ellipsis,
+                maxLines: 1,
               ),
             ],
           ),
@@ -279,15 +345,27 @@ class ResumeCard extends StatelessWidget {
   }
 
   // ============================================================
-  // PREVIEW BUTTON
+  // PREVIEW
   // ============================================================
 
   Widget _previewButton(BuildContext context) {
     return SizedBox(
       width: double.infinity,
+      height: 48,
       child: ElevatedButton.icon(
-        icon: const Icon(Icons.visibility),
-        label: const Text("Preview Resume"),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: const Color(0xFF3949AB),
+          foregroundColor: Colors.white,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
+        ),
+        icon: const Icon(Icons.visibility_rounded, size: 20),
+        label: const Text(
+          "Preview Resume",
+          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+        ),
         onPressed: () async {
           try {
             if (kIsWeb) {
@@ -317,15 +395,27 @@ class ResumeCard extends StatelessWidget {
   }
 
   // ============================================================
-  // DOWNLOAD BUTTON
+  // DOWNLOAD
   // ============================================================
 
   Widget _downloadButton(BuildContext context) {
     return SizedBox(
       width: double.infinity,
+      height: 48,
       child: ElevatedButton.icon(
-        icon: const Icon(Icons.download),
-        label: const Text("Download Resume"),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: const Color(0xFF00C853),
+          foregroundColor: Colors.white,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
+        ),
+        icon: const Icon(Icons.download_rounded, size: 20),
+        label: const Text(
+          "Download Resume",
+          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+        ),
         onPressed: () async {
           try {
             if (kIsWeb) {
@@ -353,15 +443,27 @@ class ResumeCard extends StatelessWidget {
   }
 
   // ============================================================
-  // SHARE BUTTON
+  // SHARE
   // ============================================================
 
   Widget _shareButton(BuildContext context) {
     return SizedBox(
       width: double.infinity,
+      height: 48,
       child: ElevatedButton.icon(
-        icon: const Icon(Icons.share),
-        label: const Text("Share Resume"),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: const Color(0xFF2979FF),
+          foregroundColor: Colors.white,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
+        ),
+        icon: const Icon(Icons.share_rounded, size: 20),
+        label: const Text(
+          "Share Resume",
+          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+        ),
         onPressed: () async {
           try {
             if (kIsWeb) {
@@ -389,19 +491,28 @@ class ResumeCard extends StatelessWidget {
   }
 
   // ============================================================
-  // DELETE BUTTON
+  // DELETE
   // ============================================================
 
   Widget _deleteButton(BuildContext context) {
     return SizedBox(
       width: double.infinity,
+      height: 48,
       child: ElevatedButton.icon(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.red,
-          foregroundColor: Colors.white,
+          backgroundColor: Colors.red.shade50,
+          foregroundColor: Colors.red.shade700,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+            side: BorderSide(color: Colors.red.shade200),
+          ),
         ),
-        icon: const Icon(Icons.delete),
-        label: const Text("Delete Resume"),
+        icon: const Icon(Icons.delete_rounded, size: 20),
+        label: const Text(
+          "Delete Resume",
+          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+        ),
         onPressed: () async {
           try {
             await context.read<ResumeProvider>().deleteResume(resume);
